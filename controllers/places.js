@@ -2,7 +2,7 @@ const uuid = require("uuid").v4;
 
 const HttpError = require("../models/http-error");
 
-const DUMMY_PLACES = [
+let DUMMY_PLACES = [
   {
     id: "p1",
     title: "Monas",
@@ -25,10 +25,7 @@ const getPlaceById = (req, res, next) => {
   });
 
   if (!place) {
-    throw new HttpError(
-      "Tempat yang disediakan oleh user tidak ditemukan",
-      404
-    );
+    throw new HttpError("Tempat dengan id tersebut tidak ditemukan", 404);
   }
 
   res.json({ place });
@@ -78,7 +75,14 @@ const updatePlace = (req, res, next) => {
   res.status(200).json({ place: updatedPlace });
 };
 
+const deletePlace = (req, res, next) => {
+  const placeId = req.params.id;
+  DUMMY_PLACES = DUMMY_PLACES.filter((p) => p.id !== placeId);
+  res.status(200).json({ message: "Deleted place." });
+};
+
 exports.getPlaceById = getPlaceById;
 exports.getPlaceByUserId = getPlaceByUserId;
 exports.createPlace = createPlace;
 exports.updatePlace = updatePlace;
+exports.deletePlace = deletePlace;
