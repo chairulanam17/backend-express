@@ -26,6 +26,11 @@ const getUsers = (req, res, next) => {
 const signup = (req, res, next) => {
   const { name, email, password } = req.body;
 
+  const hasUser = DUMMY_USERS.find((u) => u.email === u.email);
+  if (hasUser) {
+    throw new HttpError("Email sudah terpakai", 422);
+  }
+
   const createdUser = {
     id: uuid(),
     name,
