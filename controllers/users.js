@@ -1,5 +1,3 @@
-const { json } = require("body-parser");
-
 const HttpError = require("../models/http-error");
 
 const uuid = require("uuid").v4;
@@ -26,7 +24,7 @@ const getUsers = (req, res, next) => {
 const signup = (req, res, next) => {
   const { name, email, password } = req.body;
 
-  const hasUser = DUMMY_USERS.find((u) => u.email === u.email);
+  const hasUser = DUMMY_USERS.find((u) => u.email === email);
   if (hasUser) {
     throw new HttpError("Email sudah terpakai", 422);
   }
@@ -49,11 +47,11 @@ const login = (req, res, next) => {
   const identifiedUser = DUMMY_USERS.find((u) => u.email === email);
   if (!identifiedUser || identifiedUser.password !== password) {
     throw new HttpError(
-      "user tidak teridentifikasi, kesalahan kredential",
+      "kesalahan kredential, user tidak teridentifikasi",
       401
     );
   }
-  res.json({ message: "Loggid in!" });
+  res.json({ message: "Berhasil login" });
 };
 
 module.exports = {
